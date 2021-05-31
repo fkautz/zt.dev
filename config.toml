@@ -1,0 +1,4 @@
+baseURL = "https://zt.dev/"
+languageCode = "en-us"
+title = "zt.dev"
+theme = "ananke"
