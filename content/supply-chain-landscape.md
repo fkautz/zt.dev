@@ -29,7 +29,7 @@ Participate: https://spdx.dev/participate/
 ISO Standard: ISO/IEC 5962:2021 https://www.iso.org/standard/81870.html
 
 ## GitBOM
-Website: https://hackmd.io/@aeva/draft-gitbom-spec
+Website: https://hackmd.io/@aeva/draft-gitbom-spec  
 Participate: OpenSSF Slack #gitbom
 
 # CNCF
@@ -49,7 +49,7 @@ Participate: https://github.com/spiffe
 # OpenSSF
 
 ## SLSA
-Website: https://slsa.dev/
+Website: https://slsa.dev/  
 Participate: https://slsa.dev/getinvolved
 
 # TALKS to be listed soon
