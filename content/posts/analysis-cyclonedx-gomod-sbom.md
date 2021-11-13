@@ -12,7 +12,7 @@ The focus of this analysis is on `cyclonedx-gomod@v1.0.0`.
 Run cyclonedx-gomod with the following flags:
 
 ```sh
-cyclonedx-gomod app --files --licenses
+cyclonedx-gomod app --files --licenses --std
 ```
 
 # Opening
