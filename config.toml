@@ -17,9 +17,9 @@ copyright = "zt.dev authors"
 
   [langues.en.menu]
   [[languages.en.menu.main]]
-    identifier = "zerotrust"
-    name = "zerotrust"
-    url = "/zerotrust"
+    identifier = "zero-trust"
+    name = "zero-trust"
+    url = "/zero-trust"
 
   [[languages.en.menu.main]]
     identifier = "sbom"
