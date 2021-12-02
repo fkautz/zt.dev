@@ -1,7 +1,6 @@
 baseURL = "https://zt.dev/"
 languageCode = "en-us"
 title = "zt.dev - Zero-Trust Development"
-theme = "nivenly-theme"
 copyright = "zt.dev authors"
 
 
