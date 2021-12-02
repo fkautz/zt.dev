@@ -1,0 +1,10 @@
+<div class="glow" style="text-align: left;">
+Posts
+    <ul>
+        {{ range . }}
+            <li>
+                {{ .Date.Format "2006-01-02" }}
+                <a href="{{ .Permalink }}">{{ .Title | markdownify }}</li>
+        {{ end }}
+    </ul>
+</div>

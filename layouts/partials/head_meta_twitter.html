@@ -1,0 +1,24 @@
+
+
+
+<!-- Twitter Summary Card -->
+<meta name="twitter:image" content="https://zt.dev/assets/logo/zt.dev.png"/>
+<meta name="twitter:card" content="summary">
+<meta name="twitter:creator" content="@fkautz">
+<meta name="twitter:site" content="@fkautz">
+
+<meta property="og:image" content="https://zt.dev/assets/logo/zt.dev.png" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/" /><meta property="og:site_name" content="zt.dev" />
+
+{{ if .IsHome }}
+    <meta name="twitter:title" content="official zt.dev website [identity, policy, control]"/>
+    <meta name="twitter:description" content="{{ $.Site.Params.Description }}" />
+    <meta property="og:description" content="{{ $.Site.Params.Description }}" />
+    <meta property="og:title" content="official zt.dev website [identity, policy, control]" />
+{{ else }}
+    <meta name="twitter:title" content="{{ .Title | plainify }}"/>
+    <meta name="twitter:description" content="{{ .Summary | plainify }}"/>
+    <meta property="og:description" content="{{ with .Params.Keywords }}{{ delimit . ", " }}{{ else }}{{ $.Site.Params.Keywords }}{{ end }}"/>
+    <meta property="og:title" content="{{ .Title | plainify }}" />
+{{ end }}

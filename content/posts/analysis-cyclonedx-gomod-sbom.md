@@ -2,6 +2,8 @@
 title: "Analysis of a cyclonedx-gomod generated SBOM"
 date: 2021-11-13T13:29:52-08:00
 draft: false
+series:
+ - sbom
 ---
 
 We generated an SBOM with cyclonedx-gomod in a [previous post](/posts/creating-cyclonedx-gomod-sbom). In this post, we perform an initial analysis of the contents of the generated SBOM.

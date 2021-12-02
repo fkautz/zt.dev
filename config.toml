@@ -1,4 +1,28 @@
 baseURL = "https://zt.dev/"
 languageCode = "en-us"
-title = "zt.dev"
-theme = "ananke"
+title = "zt.dev - Zero-Trust Development"
+theme = "nivenly-theme"
+copyright = "zt.dev authors"
+
+
+[languages]
+  [languages.en]
+    title = "zt.dev - Zero Trust and Software Supply Chain Defense"
+    subtitle = "Zero Trust, Software, Identity, Policy, Control, Automation"
+
+
+  [languages.en.params.logo]
+    logoUser = "frederick"
+    logoHost = "zt.dev"
+
+
+  [langues.en.menu]
+  [[languages.en.menu.main]]
+    identifier = "zerotrust"
+    name = "zerotrust"
+    url = "/zerotrust"
+
+  [[languages.en.menu.main]]
+    identifier = "sbom"
+    name = "sbom"
+    url = "/sbom"
