@@ -2,6 +2,8 @@
 title: "Creating an SBOM for a golang app using cyclonedx-gomod"
 date: 2021-11-11T01:18:52-08:00
 draft: false
+series:
+ - sbom
 ---
 
 We can easily create CycloneDX SBOMs for Golang using a new tool from the CycloneDX team.

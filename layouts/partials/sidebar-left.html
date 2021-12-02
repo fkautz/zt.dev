@@ -1,0 +1,48 @@
+<!--Nóva-->
+<div class="side side-border-right" id="magicSidebarLeft">
+
+    <!-- About Me -->
+    <div class="side-large">
+        <span class="color-highlight">[</span><span class="color-alt"> about me </span><span class="color-highlight">]</span>
+    </div>
+
+    <!-- /readme -->
+    <div class="side-paragraph">
+        <a href="/readme">
+            <span class="color-highlight glow">{{ partial "fa.html" "terminal" }}</span>
+            <span class="color-alt glow">/readme</span>
+        </a>
+    </div> 
+</div>
+
+
+<script>
+    const getSidebarL = window.localStorage && window.localStorage.getItem("toggleL");
+    const sidebarToggleL = document.querySelector(".toggle-sidebar");
+    const toggleL = document.getElementById('magicSidebarLeft');
+    const isSidebarL = getSidebarL === "true";
+
+    if (getSidebarL !== null) {
+        toggleL.classList.toggle("hidden", isSidebarL);
+    }
+
+    sidebarToggleL.addEventListener("click", () => {
+        toggleL.classList.toggle("hidden");
+        window.localStorage &&
+        window.localStorage.setItem(
+            "toggleL",
+            toggleL.classList.contains("hidden") ? "true" : "false",
+        );
+    });
+
+    function toggleSidebarLeft() {
+        var toggleLeft = document.getElementById('magicSidebarLeft');
+
+        if(toggleLeft.classList.contains('hidden')) {
+            document.getElementById('magicSidebarLeft').classList.remove('hidden');
+        } else {
+            document.getElementById('magicSidebarLeft').classList.add('hidden');
+        }
+    }
+</script>
+<!--Nóva-->

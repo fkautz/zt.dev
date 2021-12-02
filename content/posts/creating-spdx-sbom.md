@@ -2,6 +2,8 @@
 title: "Creating an SBOM for a golang app using spdx-sbom-generator"
 date: 2021-11-14T14:14:20-08:00
 draft: false
+series:
+ - sbom
 ---
 
 The SPDX community created the `spdx-sbom-generator` that makes it trivial to create SPDX based SBOMs. In this post, we will generate an SPDX SBOM.

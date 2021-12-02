@@ -1,0 +1,97 @@
+<!--Nóva-->
+<div class="side side-border-left" id="magicSidebarRight">
+
+    <!-- Featured -->
+    <div class="side-large">
+        <span class="color-highlight">[</span><span class="color-alt"> featured </span><span class="color-highlight">]</span>
+    </div>
+
+    <!-- discord -->
+    <div class="side-paragraph">
+        <a href="/supply-chain-landscape"  rel="noopener noreferrer">
+            <span class="color-highlight glow">{{ partial "fa.html" "map" }}</span>
+            <span class="color-alt glow">SBOM Landscape</span>
+        </a>
+    </div>
+
+    <!-- communities -->
+    <div class="side-large">
+        <span class="color-highlight">[</span><span class="color-alt"> communities </span><span class="color-highlight">]</span>
+    </div>
+
+    <!-- CNCF TAG-Security -->
+    <div class="side-paragraph">
+        <a href="https://github.com/cncf/tag-security" target="_blank" rel="noopener noreferrer">
+            <span class="color-highlight glow">{{ partial "fa.html" "cogs" }}</span>
+            <span class="color-alt glow">CNCF TAG Security</span>
+        </a>
+    </div>
+    
+    <!-- NTIA SBOM -->
+    <div class="side-paragraph">
+        <a href="https://ntia.gov/sbom" target="_blank" rel="noopener noreferrer">
+            <span class="color-highlight glow">{{ partial "fa.html" "cogs" }}</span>
+            <span class="color-alt glow">NTIA SBOM Working Group</span>
+        </a>
+    </div>
+    
+    <!-- projects -->
+    <div class="side-large">
+        <span class="color-highlight">[</span><span class="color-alt"> projects </span><span class="color-highlight">]</span>
+    </div>
+    
+    <!-- SPIFFE -->
+    <div class="side-paragraph">
+        <a href="https://spiffe.io" target="_blank" rel="noopener noreferrer">
+            <span class="color-highlight glow">{{ partial "fa.html" "cogs" }}</span>
+            <span class="color-alt glow">SPIFFE</span>
+        </a>
+    </div>
+
+    <!-- Network Service Mesh -->
+    <div class="side-paragraph">
+        <a href="https://networkservicemesh.io" target="_blank" rel="noopener noreferrer">
+            <span class="color-highlight glow">{{ partial "fa.html" "cogs" }}</span>
+            <span class="color-alt glow">Network Service Mesh</span>
+        </a>
+    </div>
+
+    <!-- NAML -->
+    <div class="side-paragraph">
+        <a href="https://github.com/kris-nova/naml" target="_blank" rel="noopener noreferrer">
+            <span class="color-highlight glow">{{ partial "fa.html" "cogs" }}</span>
+            <span class="color-alt glow">NAML</span>
+        </a>
+    </div>
+</div>
+
+<script>
+    const getSidebarR = window.localStorage && window.localStorage.getItem("toggleR");
+    const sidebarToggleR = document.querySelector(".toggle-sidebar");
+    const toggleR = document.getElementById('magicSidebarRight');
+    const isSidebarR = getSidebarR === "true";
+
+    if (getSidebarR !== null) {
+        toggleR.classList.toggle("hidden", isSidebarR);
+    }
+
+    sidebarToggleR.addEventListener("click", () => {
+        toggleR.classList.toggle("hidden");
+        window.localStorage &&
+        window.localStorage.setItem(
+            "toggleR",
+            toggleR.classList.contains("hidden") ? "true" : "false",
+        );
+    });
+
+    function toggleSidebarLeft() {
+        var toggleLeft = document.getElementById('magicSidebarLeft');
+
+        if(toggleLeft.classList.contains('hidden')) {
+            document.getElementById('magicSidebarRight').classList.remove('hidden');
+        } else {
+            document.getElementById('magicSidebarRight').classList.add('hidden');
+        }
+    }
+</script>
+<!--Nóva-->

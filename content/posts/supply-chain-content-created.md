@@ -2,6 +2,8 @@
 title: "Creating a Software Supply Chain Landscape"
 date: 2021-10-14T01:10:57-07:00
 draft: false
+series:
+ - sbom
 ---
 
 We needed a software supply chain landscape, and one now exists. I look forward to seeing this grow over time.

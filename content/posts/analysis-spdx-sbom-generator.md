@@ -2,6 +2,8 @@
 title: "Analysis of a spdx-sbom-generator generated SBOM"
 date: 2021-11-14T19:57:00-08:00
 draft: false
+series:
+ - sbom
 ---
 
 We generated an SBOM with the SPDX SBOM Generator in a [previous post](/posts/creating-spdx-sbom/). In this post, we perform an initial analysis of the contents of the generated SBOM.
