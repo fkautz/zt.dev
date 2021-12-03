@@ -149,8 +149,7 @@ a.read-more:hover {
 }
 
 .header {
-    border-bottom: #96c3f1 1px solid;
-    background: #fafafa;
+    border-bottom: var(--border-color) 1px solid;
     background: var(--header);
     display: flex;
     padding: 12px
@@ -160,7 +159,8 @@ a.read-more:hover {
 .header__right {
     display: flex;
     flex-direction: row;
-    align-items: center
+    align-items: center;
+    color: var(--background);
 }
 
 @media (max-width:683px) {
@@ -203,6 +203,7 @@ a.read-more:hover {
 
 
 .logo {
+    color: var(--background);
     text-decoration: none;
     font-size:1.3rem;
     font-family: Nova;
@@ -387,9 +388,7 @@ body {
     letter-spacing: 1px;
     font-feature-settings: "liga", "tnum", "case", "calt", "zero", "ss01", "locl";
     line-height: 1.54;
-    background-color: #fff;
     background-color: var(--background);
-    color: #222;
     color: var(--color);
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
@@ -505,8 +504,9 @@ figure figcaption.right {
 code,
 kbd {
     font-family: Nova, Nova-Alt1, Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace;
-    background: #eaeaea;
-    background: var(--background-secondary);
+    /* background: #eaeaea; */
+    color: var(--background);
+    background: var(--color);
     padding: 1px 6px;
     margin: 0 2px;
     border-radius: 5px;
@@ -911,8 +911,8 @@ blockquote.twitter-tweet {
 .footer {
     padding: 40px 20px;
     flex-grow: 100;
-    border-top: #96c3f1 1px solid;
-    background: #1A1616;
+    /* border-top: var(--color) 1px solid; */
+    background-color: var(--background-color);
     color: var(--color);
     height: 100%;
 }
