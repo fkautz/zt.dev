@@ -1,17 +1,24 @@
 /* FONTS */
 @font-face {
     font-family: Nova-Alt1;
-    src: url('fonts/3270.ttf') format('truetype');
+    /* src: url('fonts/3270.ttf') format('truetype'); */
 }
 
 @font-face {
     font-family: Nova;
-    src: url('fonts/TerminusModern.ttf') format('truetype');
+    /* src: url('fonts/TerminusModern.ttf') format('truetype'); */
+    src: url('fonts/FiraCode-VariableFont_wght.ttf') format('truetype');
 }
 
 @font-face {
     font-family: Nova;
-    src: url('fonts/TerminusModern.ttf') format('truetype');
+    /* src: url('fonts/TerminusModern.ttf') format('truetype'); */
+    src: url('fonts/FiraCode-VariableFont_wght.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: FiraCode;
+    src: url('fonts/FiraCode-VariableFont_wght.ttf') format('truetype');
 }
 
 
@@ -52,21 +59,31 @@ body.dark-theme {
     --background-secondary:var(--color-secondary);
     /* --header: var(--header); */
     --color: var(--background);
-    --color-secondary: var(--background-secondary);
+    --color: var(--background);
+    /* --color-secondary: var(--background-secondary); */
+    --color-secondary: yellow;
     --border-color: var(--color-secondary);
+
+    /* --code-color: var(--theme-code-background-color);
+    --code-background-color: var(--theme-code-color); */
 }
 
 /* :root is "body.light-theme" */
 :root {
     --fontSize: 1.0rem;
     --background: #F4FAF8;
+    /* --background-secondary: #819595; */
     --background-secondary: #819595;
     --header: #1a1616;
     --color: #010101;
-    --color-secondary: #000000;
+    --color-secondary: #333333;
     --border-color: var(--background);
     --phoneWidth: (max-width:684px);
     --tabletWidth: (max-width:900px);
+    --theme-code-color: #f8f8f2;
+    --theme-code-background-color: #494A44;
+    --code-color: var(--theme-code-color);
+    --code-background-color: var(--theme-code-background-color);
 }
 
 .main {
@@ -103,7 +120,9 @@ body.dark-theme {
 
 .content {
     /* font-family: Nova, Nova-Alt1; */
-    font-family: Georgia, 'Times New Roman', Times, serif;
+    /* font-family: Georgia, 'Times New Roman', Times, serif; */
+    font-family: Roboto;
+    /* font-family: FiraCode; */
     font-size: var(--fontSize);
     /* background-color: var(--background); */
     flex-direction: column;
@@ -193,12 +212,12 @@ body.dark-theme {
 /* ATTRIBUTES */
 .glow {
     /* text-shadow: var(--color) 0px 0px 8px; */
-    text-shadow: var(--color) 0px 0px 8px;
+    text-shadow: var(--color-secondary) 0px 0px 8px;
 }
 
 a:link {
     text-decoration: none;
-    text-shadow: var(--color) 0px 0px 8px;
+    text-shadow: var(--color-secondary) 0px 0px 8px;
 
 }
 

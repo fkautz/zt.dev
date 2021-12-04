@@ -4,19 +4,20 @@
 */
 @font-face {
     font-family: Nova-Alt1;
-    src: url('fonts/3270.ttf') format('truetype');
+    /* src: url('fonts/3270.ttf') format('truetype'); */
+    src: url('fonts/FiraCode-VariableFont_wght.ttf') format('truetype');
 }
 
 @font-face {
     font-family: Nova;
-    src: url('fonts/TerminusModern.ttf') format('truetype');
+    /* src: url('fonts/TerminusModern.ttf') format('truetype'); */
+    src: url('fonts/FiraCode-VariableFont_wght.ttf') format('truetype');
 }
 
 @font-face {
-    font-family: Nova;
-    src: url('fonts/TerminusModern.ttf') format('truetype');
+    font-family: FiraCode;
+    src: url('fonts/FiraCode-VariableFont_wght.ttf') format('truetype');
 }
-
 
 
 
@@ -503,11 +504,12 @@ figure figcaption.right {
 
 code,
 kbd {
-    font-family: Nova, Nova-Alt1, Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace;
+    /* font-family: Nova, Nova-Alt1, Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace; */
+    font-family: fira;
     /* background: #eaeaea; */
-    color: var(--background);
-    background: var(--color);
-    padding: 1px 6px;
+    color: var(--code-color);
+    background: var(--code-background-color);
+    padding: 2px 6px;
     margin: 0 2px;
     border-radius: 5px;
     font-size: .9rem;
@@ -528,7 +530,8 @@ pre {
     padding: 20px;
     border-radius: 8px;
     font-size: .9rem;
-    overflow: auto
+    overflow: auto;
+    font-family: FiraCode, Nova, Nova-Alt1 monospace;
 }
 
 @media (max-width:683px) {
