@@ -41,8 +41,6 @@ SBOM is not common yet. There are obstacles to implementation:
 
 A POC named garden is being used to validate ideas. The group aims to publish a report by March. It is looking for identifying the benefits and costs.
 
-The expected efforts include 
-
 Tentative findings:
 * The SBOM accuracy matters
 * [missed, sorry]
