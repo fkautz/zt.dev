@@ -12,7 +12,7 @@ series:
 
 ## Short note
 These are my personal notes.
-As such, the may be incomplete and inaccurate at times.
+As such, they may be incomplete and inaccurate at times.
 If you feel I misrepresented a speaker or a topic, please reach out to me so that we can collaborate on improving this article.
 I was also trying to participate in some of the chats simultaneously, so I could not take a complete set of notes for the latter part of the event.
 I intend to relisten to the later portions of the event and write more about it once the videos are available.
