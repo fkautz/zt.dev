@@ -7,8 +7,6 @@ series:
  - sbom-a-rama
 ---
 
-SBOM-a-Rama
-
 # SBOM-a-Rama, Day 1
 
 
