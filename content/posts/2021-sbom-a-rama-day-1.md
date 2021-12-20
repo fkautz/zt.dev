@@ -20,7 +20,7 @@ I intend to relisten to the later portions of the event and write more about it 
 I also plan to write a more sophisticated post on VEX later.
 
 ## Opening
-* SBOMN will give us visibility into what is in our software.
+* SBOM will give us visibility into what is in our software.
 * SBOM will provide us with an understanding of how our software works 
 
 ## History of SBOM by Josh Corman
@@ -134,3 +134,5 @@ The speakers did not cover several questions on the first day of the event. A sh
 * Why we should bias towards source-based SBOM generation at build time.
 * How do we capture information on dynamic systems? These are likely out of scope for SBOMs.
 * How do we use an SBOM to inform SaaS-based solutions? (spoiler: The answer isn't SBOMs as the initial point of contact).
+
+[Continue to the Day 2 Write-Up]({{< ref "/posts/2021-sbom-a-rama-day-2">}})

@@ -7,6 +7,7 @@ series:
  - sbom-a-rama
 ---
 
+[Read the Day 1 Write-Up First]({{< ref "/posts/2021-sbom-a-rama-day-2">}})
 
 # SBOM-a-Rama, Day 2
 
