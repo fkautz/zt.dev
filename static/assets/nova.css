@@ -1,24 +1,35 @@
 /* FONTS */
+/* @font-face {
+    font-family: Nova-Alt1;
+    // (recomment if Nova-Alt1 uncommented) src: url('fonts/3270.ttf') format('truetype');
+    font-display: swap;
+} */
+
 @font-face {
     font-family: Nova-Alt1;
-    /* src: url('fonts/3270.ttf') format('truetype'); */
+    /* src: url('fonts/TerminusModern.ttf') format('truetype'); */
+    src: url('fonts/FiraCode-VariableFont_wght.ttf') format('truetype');
+    font-display: swap;
 }
 
 @font-face {
     font-family: Nova;
     /* src: url('fonts/TerminusModern.ttf') format('truetype'); */
     src: url('fonts/FiraCode-VariableFont_wght.ttf') format('truetype');
+    font-display: swap;
 }
 
 @font-face {
     font-family: Nova;
     /* src: url('fonts/TerminusModern.ttf') format('truetype'); */
     src: url('fonts/FiraCode-VariableFont_wght.ttf') format('truetype');
+    font-display: swap;
 }
 
 @font-face {
     font-family: FiraCode;
     src: url('fonts/FiraCode-VariableFont_wght.ttf') format('truetype');
+    font-display: swap;
 }
 
 
