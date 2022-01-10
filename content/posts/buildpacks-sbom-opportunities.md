@@ -12,6 +12,9 @@ Buildpacks provide a natural location for integrating SBOMs into developer build
 
 *Author's note: the goal here isn't to bash the current state. This is fantastic work and represents a great start, and can evolve into something much more robust. The first iteration should be small in scope and demonstrate opportunity, which this does beautifully.*
 
+
+**UPDATE: It was brought to my attention that the latest buildpacks from Paketo.io will support CycloneDX, SPDX, and Syft SBOM formats. Work is being done to integrate Syft and Grype. Cosign support is also being proposed. Get the details here: https://twitter.com/_sambhavkothari/status/1480461525655724033**
+
 ## A short introduction on Buildpacks
 ### Buildpacks Definition
 
