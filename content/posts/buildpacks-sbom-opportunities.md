@@ -4,6 +4,7 @@ date: 2022-01-10T04:00:00
 draft: false
 series:
  - sbom
+ - buildpacks
 ---
 
 # Buildpacks and SBOM integration
