@@ -1,5 +1,5 @@
 ---
-title: "Inline analysis of the OMB Memorandum MB-22-09: Zero Trust Memo"
+title: "Overview of the OMB Memorandum MB-22-09: Zero Trust Memo"
 date: 2022-01-31T20:12:56-08:00
 draft: false
 series:
@@ -8,20 +8,19 @@ series:
  - policy
  - cisa
 ---
-# OMB M-22-09
-This article is a long one.  It contains my detailed notes of the entire OMB.  I am not expecting most people to read through the whole thing.  It also includes some of my thoughts and opinions as of 30 January 2022.
+# OMB Memorandum M-22-09
+This post contains my notes of the entire OMB. These notes are not a full analysis of the memo but it does include some of my thoughts and opinions as of 30 January 2022.
 
 You can read the original at https://www.whitehouse.gov/wp-content/uploads/2022/01/M-22-09.pdf
 
-One significant omission is the OMB says nothing about Software or Hardware Supply Chain provenance.  I suspect we will see more on this in a later memo since EO 14028 explicitly calls it out.
+One significant omission is the OMB says nothing about Software or Hardware Supply Chain provenance other than authorization may use properties of the device and environment to determine authorization.  I suspect we will see more on this in a later memo since EO 14028 explicitly calls it out.
 
 ## My thoughts
+The OMB is following the guidance of CISA and NIST.  The deadline for some of the implementation is the end of FY 2024. For reference, FY 2024 ends on 30 September 2024.
 
-The OMB is following the guidance of CISA and NIST.  The deadline for some of the implementation is the end of FY 2024.  FY 2024 ends on 30 September 2024.
+**The largest callout I can make is the requirement for authentication/authorization to occur at the application level, rather than relying on network authentication as the primary mechanism.**
 
-The largest callout I can make is the requirement for authentication/authorization to occur at the application level, rather than relying on network authentication as the primary mechanism.
-
-The second-largest callout I can make is the required move from RBAC (Role-Based Access Control) to ABAC (Attribute-Based Access Control).
+**The second-largest callout I can make is the required move from RBAC (Role-Based Access Control) to ABAC (Attribute-Based Access Control).**
 
 I have attempted to include as much as possible, but the memo is a lengthy document with detailed requirements.  Omissions will be present, but I have tried to match the document's spirit.
 
