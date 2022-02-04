@@ -1,5 +1,5 @@
 ---
-title: "[FIXED]: GCP BuildPacks Old Compiler Injection Write-Up"
+title: "GCP BuildPacks Old Compiler Injection Write-Up [Fixed]"
 date: 2022-02-03T22:29:38-08:00
 draft: false
 series:
