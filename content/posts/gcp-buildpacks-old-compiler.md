@@ -1,7 +1,7 @@
 ---
 title: "[FIXED]: GCP BuildPacks Old Compiler Injection Write-Up"
 date: 2022-02-03T22:29:38-08:00
-draft: true
+draft: false
 series:
  - sbom
  - buildpacks
