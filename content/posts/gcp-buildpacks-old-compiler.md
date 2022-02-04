@@ -1,5 +1,5 @@
 ---
-title: "GCP BuildPacks Old Compiler Injection Write-Up [Fixed]"
+title: "GCP Buildpacks Old Compiler Injection Write-Up [Fixed]"
 date: 2022-02-03T22:29:38-08:00
 draft: false
 series:
@@ -7,17 +7,17 @@ series:
  - buildpacks
  - vulnerabilities
 ---
-# [FIXED]: GCP BuildPacks Old Compiler Injection Write-Up
+# [FIXED]: GCP Buildpacks Old Compiler Injection Write-Up
 
-**I would like to personally thank the GCP BuildPacks team for supporting this important project and fixing this issue!**
+**I would like to personally thank the GCP Buildpacks team for supporting this important project and fixing this issue!**
 
-This article describes a **FIXED** vulnerability in GCP BuildPacks that I discovered and collaborated with the GCP team to fix. The buildpack now downloads the most recent stable compiler, effectively fixing the problem. 
+This article describes a **FIXED** vulnerability in GCP Buildpacks that I discovered and collaborated with the GCP team to fix. The buildpack now downloads the most recent stable compiler, effectively fixing the problem. 
 
 The short version of this report is the GCP Golang Buildpack used to pull in an old, no-longer-maintained compiler. Today, it pulls in the latest stable compiler.
 
 This bug also highlights the need for SBOM and in-toto attestations, including compiler information. People will make mistakes, and these tools will help prevent or detect these errors. A properly attested SBOM will eventually allow automated processes to detect and report vulnerabilities such as in this this write-up.
 
-A side effect of fixing this bug in the GCP BuildPack is all future builds using this BuildPack will be protected from this failure mode.
+A side effect of fixing this bug in the GCP Buildpack is all future builds using this Buildpack will be protected from this failure mode.
 
 
 Products:
@@ -29,7 +29,7 @@ Fix:
 
 # Write-up
 
-Before the fix, GCP BuildPacks originally pulled in older compilers based upon the level of compatibility rather than the latest stable version.
+Before the fix, GCP Buildpacks originally pulled in older compilers based upon the level of compatibility rather than the latest stable version.
 
 For example, thub.com/fkautz/serve has the following go.mod:
 
@@ -87,7 +87,7 @@ gcloud alpha builds submit --pack image=gcr.io/fkautz-dev/sample-go
 The system pulls in the oldest compiler rather than the latest golang compiler. You can see it pulling go1.14 instead of go1.17.6.
 
 # Resolution
-The most recent version of GCP BuildPacks now pulls in the latest compiler. The above is now fixed and deployed.
+The most recent version of GCP Buildpacks now pulls in the latest compiler. The above is now fixed and deployed.
 
 The fix is located in [this commit](https://github.com/GoogleCloudPlatform/buildpacks/commit/9b81ec3cca918acae5c1f82ba3d1dcf92c649986).
 
