@@ -9,17 +9,24 @@ This site was created as a place to publish information about `Zero Trust` and `
 
 [LinkedIn](https://linkedin.com/in/fkautz)
 
-Frederick Kautz is a leader with a long history in the Open Source Community, connecting people and organizations to solve fundamental data sharing problems that strengthen security and healthcare patient privacy. He currently leads multiple cross-organizational teams to deliver on this vision. He is also a strong advocate for empowering patients’ ownership of their health data and democratizing healthcare research. Frederick has pioneered Federated Learning and privacy-preserving technologies, which enable multiple organizations and patients to collaborate without exposing sensitive data to each other. Frederick is also leading an effort to bring Zero-Trust infrastructure to the HealthCare industry through collaboration with multiple leading computing companies.
+Frederick Kautz is an exceptional leader with an extensive background in the Open Source Community. With over a decade of experience in Cloud-Native environments, Frederick's expertise lies in security, networking, and storage domains. He has co-authored several publications, including the Cloud Native Security White Paper and Solving the Bottom Turtle. As a Co-Chair for KubeCon + CloudNativeCon and a member of the SPIFFE Steering Committee, Frederick is at the forefront of the industry, providing Zero Trust Workload Identity to compute workloads and resources.
 
-Frederick has extensive Cloud-Native experience collaborating on security, networking, and storage domains and serves as a Co-Chair for KubeCon + CloudNativeCon. He is a member of the SPIFFE Steering Committee, focusing on providing Zero Trust Workload Identity to compute workloads and resources. Frederick co-authored the Cloud Native Security White Paper published by the CNCF. He also co-authored Solving the Bottom Turtle. Frederick co-created GitBOM and maintains the reference golang implementation. He is a co-founder and maintainer of Network Service Mesh. In NSM, Frederick collaborates with a large and diverse set of companies and individuals toward a common goal of modernizing network infrastructure. His prior work defined the Cloud-Native Network Function, which significantly influences multiple significant collaborations, including CNCF, LFN, IEEE, and the GSMA. Previously, he also fathered Red Hat Container Storage.
+Frederick has co-created multiple innovative projects, most recently OmniBOR and its Golang and Rust reference implementations. Frederick is also a co-founder and maintainer of Network Service Mesh. His work in Network Service Mesh has helped to modernize network infrastructure and collaborate with a large and diverse group of companies and individuals. Frederick's prior work defined the Cloud-Native Network Function, which significantly influences multiple significant collaborations, including CNCF, LFN, IEEE, and the GSMA. 
+
+Additionally, Frederick is a strong advocate for empowering patients' ownership of their health data and democratizing healthcare research. He has pioneered Federated Learning and privacy-preserving technologies, which enable multiple organizations and patients to collaborate without exposing sensitive data to each other.
+
+As a leader in the industry, Frederick co-chairs the CTA ANSI/CTA-2114: Mitigating Cybersecurity Threats in ML-Based Systems Committee. He leads multiple cross-organizational teams to develop industry standards for security and privacy in Machine Learning.
+
+Frederick's exceptional leadership skills and expertise make him a valuable addition to any organization. He is continuously advancing the industry and pushing for innovation, making him a crucial player in Cloud-Native environments and beyond.
 
 * Co-Chair KubeCon + CloudNativeCon NA 2022, EU 2023, NA 2023
 * Co-Author of CNCF Cloud Native Security White Paper
 * SPIFFE Steering Committee Member
-* GitBOM Co-Creator and maintainer
+* OmniBOR Co-Creator and maintainer
 * NSM Co-Creator and Committer
 * Co-Author of Solving the Bottom Turtle https://spiffe.io/book/
-* X-Factor CNF Methodology author & Organizer (CNF Best Practices)
+* X-Factor CNF Methodology author
+* Significant contributions to CNF Best Practices
 * CNCF TUG and CNF WG Contributor
 * Former LFPH Technical Advisory Committee Member
 * Track Co-Chair of KubeCon NA 2020 Networking Track 
