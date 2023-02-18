@@ -15,9 +15,9 @@ Frederick has co-created multiple innovative projects, most recently OmniBOR and
 
 Additionally, Frederick is a strong advocate for empowering patients' ownership of their health data and democratizing healthcare research. He has pioneered Federated Learning and privacy-preserving technologies, which enable multiple organizations and patients to collaborate without exposing sensitive data to each other.
 
-As a leader in the industry, Frederick co-chairs the CTA ANSI/CTA-2114: Mitigating Cybersecurity Threats in ML-Based Systems Committee. He leads multiple cross-organizational teams to develop industry standards for security and privacy in Machine Learning.
+Frederick co-chairs the CTA ANSI/CTA-2114: Mitigating Cybersecurity Threats in ML-Based Systems Committee. He leads multiple cross-organizational teams to develop industry standards for security and privacy in Machine Learning.
 
-Frederick's exceptional leadership skills and expertise make him a valuable addition to any organization. He is continuously advancing the industry and pushing for innovation, making him a crucial player in Cloud-Native environments and beyond.
+A summarized set of significant contributions include:
 
 * Co-Chair KubeCon + CloudNativeCon NA 2022, EU 2023, NA 2023
 * Co-Author of CNCF Cloud Native Security White Paper
