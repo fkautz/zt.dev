@@ -11,6 +11,22 @@ of SBOM and Supply Chain projects and how to find their respective communities.
 If you would like to contribute to this list, please open an issue or pull
 request at https://github.com/fkautz/zt.dev
 
+# Books
+## Software Transparency: Supply Chain Security in an Era of a Software-Driven Society 1st Edition
+by Chris Hughes (Author), Tony Turner (Author), Steve Springett (Editor), Allan Friedman (Foreword)
+
+## Software Supply Chain Security: Securing the End-to-End Supply Chain for Software, Firmware, and Hardware
+by Cassie Crossley | est. Apr 30, 2024
+
+# Guidance
+
+## NIST SSDF
+https://csrc.nist.gov/projects/ssdf
+https://csrc.nist.gov/pubs/sp/800/218/final
+
+## NIST SP 800-204D
+https://csrc.nist.gov/pubs/sp/800/204/d/ipd
+
 # Requirements / Policy Working Groups
 
 ## NTIA SBOM Resource Page
