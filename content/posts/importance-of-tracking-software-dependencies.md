@@ -4,7 +4,7 @@ date: 2023-11-12T12:44:00-06:00
 draft: false
 series:
  - sbom
- - buildpacks
+ - log4shell
  - vulnerabilities
 ---
 # On the Importance of Tracking Software Dependencies
