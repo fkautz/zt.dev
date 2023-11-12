@@ -8,7 +8,7 @@ series:
  - vulnerabilities
 ---
 
-While contributing to the development of NIST SP 800-204D, a primary objective I pursued was to address a particular deficiency in the realm of software supply chain security. Here's the critical insight from this endeavor as written in the document:
+While contributing to the development of [NIST SP 800-204D](https://csrc.nist.gov/pubs/sp/800/204/d/ipd), a primary objective I pursued was to address a particular deficiency in the realm of software supply chain security. Here's the critical insight from this endeavor as written in the document:
 
 > SSC security should also account for discovering and tracking software defects rather than simply mitigating attackers.
 
