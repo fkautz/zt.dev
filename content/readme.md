@@ -28,6 +28,7 @@ Notable Contributions:
 * OmniBOR and ProtoBOM Co-Creator and Maintainer – Innovations in SBOM and binary transparency.
 * Network Service Mesh Co-Founder – Advancing secure, cloud-native networking.
 * SPIFFE Steering Committee Member – Driving standards in workload identity.
+* Red Hat Container Storage Engine Founder - Storage for Containers
 
 Additional Contributions:
 
