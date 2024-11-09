@@ -9,27 +9,37 @@ This site was created as a place to publish information about `Zero Trust` and `
 
 [LinkedIn](https://linkedin.com/in/fkautz)
 
-Frederick Kautz is an exceptional leader with an extensive background in the Open Source Community. With over a decade of experience in Cloud-Native environments, Frederick's expertise lies in security, networking, and storage domains. He has co-authored several publications, including the Cloud Native Security White Paper and Solving the Bottom Turtle. As a Co-Chair for KubeCon + CloudNativeCon and a member of the SPIFFE Steering Committee, Frederick is at the forefront of the industry, providing Zero Trust Workload Identity to compute workloads and resources.
+Frederick Kautz is a distinguished leader in open-source and cloud-native communities, with over 10 years of kubernetes and docker experience, extensive expertise in software supply chain security, Zero Trust, and networking. He co-authored the influential NIST Special Publication 800-204D, Strategies for the Integration of Software Supply Chain Security in DevSecOps CI/CD Pipelines, which has significantly influenced the Department of Defense’s Enterprise DevSecOps Fundamentals version 2.5 by defining the software supply chain. 
 
-Frederick has co-created multiple innovative projects, most recently OmniBOR and its Golang and Rust reference implementations. Frederick is also a co-founder and maintainer of Network Service Mesh. His work in Network Service Mesh has helped to modernize network infrastructure and collaborate with a large and diverse group of companies and individuals. Frederick's prior work defined the Cloud-Native Network Function, which significantly influences multiple significant collaborations, including CNCF, LFN, IEEE, and the GSMA. 
+At Elevance Health, Frederick served as the lead architect for the Sydney Health app, a comprehensive mobile platform that provides users with personalized health information, digital ID cards, and access to care services. Collaborating closely with the Chief Information Security Officer (CISO) and the security team, Frederick was instrumental in defining the company’s Zero Trust strategy and the onboarding of Google Cloud Platform (GCP), transforming Elevance Health’s cloud infrastructure for secure, scalable growth.
 
-Additionally, Frederick is a strong advocate for empowering patients' ownership of their health data and democratizing healthcare research. He has pioneered Federated Learning and privacy-preserving technologies, which enable multiple organizations and patients to collaborate without exposing sensitive data to each other.
+Frederick also architected WorkOS, Elevance Health’s enterprise platform designed to streamline operations and enhance collaboration across the organization. By integrating advanced security measures and scalable cloud solutions, he ensured that WorkOS met the complex needs of a large healthcare enterprise.
 
-Frederick co-chairs the CTA ANSI/CTA-2114: Mitigating Cybersecurity Threats in ML-Based Systems Committee. He leads multiple cross-organizational teams to develop industry standards for security and privacy in Machine Learning.
+His leadership extends to his tenure as Co-Chair of KubeCon + CloudNativeCon (now Emeritus), where he helped expand the global cloud-native community and set new standards for security and inclusivity. As a current member of the SPIFFE Steering Committee, Frederick continues to drive standards in workload identity and Zero Trust.
 
-A summarized set of significant contributions include:
+As an innovator, Frederick co-founded OmniBOR and ProtoBOM, advancing transparency in binary provenance and software bill of materials (SBOM) practices. In 2019, he developed one of the first federated learning platforms for healthcare, enabling collaborative research while preserving patient privacy. Additionally, he is a co-founder of Network Service Mesh. He has contributed to modernizing network infrastructure for secure, cloud-native networking solutions. He also defined the “CNF: Cloud Native Network Function,” which transformed network service provider architectures by enabling them to run on cloud architectures like Kubernetes.
 
-* Co-Chair KubeCon + CloudNativeCon NA 2022, EU 2023, NA 2023
-* Co-Author of CNCF Cloud Native Security White Paper
-* SPIFFE Steering Committee Member
-* OmniBOR Co-Creator and maintainer
-* NSM Co-Creator and Committer
-* Co-Author of Solving the Bottom Turtle https://spiffe.io/book/
-* X-Factor CNF Methodology author
-* Significant contributions to CNF Best Practices
-* CNCF TUG and CNF WG Contributor
+Notable Contributions:
+
+* Co-Author of NIST SP 800-204D – Provided foundational guidance for secure software supply chains.
+* Lead Architect for Sydney Health App at Elevance Health – High volume customer facing app working with PHI.
+* Architect of WorkOS at Elevance Health – Designed an enterprise platform to streamline operations and enhance collaboration.
+* Emeritus Co-Chair of KubeCon + CloudNativeCon – led KubeCon out of its COVID phase.
+* OmniBOR and ProtoBOM Co-Creator and Maintainer – Innovations in SBOM and binary transparency.
+* Network Service Mesh Co-Founder – Advancing secure, cloud-native networking.
+* SPIFFE Steering Committee Member – Driving standards in workload identity.
+
+Additional Contributions:
+
+* Co-Author of the CNCF Cloud Native Security White Paper
+* Contributor to CNF Best Practices, CNCF TUG, and CNF WG
+* Co-Author of “Solving the Bottom Turtle” and X-Factor CNF Methodology
 * Former LFPH Technical Advisory Committee Member
-* Track Co-Chair of KubeCon NA 2020 Networking Track 
-* Program Committee of Networking Track for KubeCon EU and NA 2020
-* Program Committee Member of Open Networking Summit 2019 NA & EU
-* Program Advisory Group Members of Edge Computing World 2019
+
+Program Advisory and Committee Roles:
+
+* Track Co-Chair, KubeCon NA 2020 Networking Track
+* Program Committee Member, KubeCon EU and NA 2020 Networking Track
+* Program Committee Member, Open Networking Summit 2019 (NA & EU)
+* Program Advisory Group Member, Edge Computing World 2019
+
