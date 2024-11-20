@@ -25,3 +25,8 @@ copyright = "zt.dev authors"
     identifier = "sbom"
     name = "sbom"
     url = "/sbom"
+
+  [[languages.en.menu.main]]
+    identifier = "talks" 
+    name = "talks"
+    url = "/talks"
