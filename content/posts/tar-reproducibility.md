@@ -17,7 +17,7 @@ series:
 
 # The Challenge of Non-Repeatability
 
-Tarballs are created using the tar utility, which can exhibit different behaviors based on the version and configuration. This includes how metadata is handled, the order of files in the archive, and the specifics of compression techniques used. Such differences, although sometimes subtle, can lead to significant challenges in environments that rely on deterministic builds—where the same source code should always produce an identical binary output.
+Tarballs are typically created using the tar utility, which can exhibit different behaviors based on the version and configuration. This includes how metadata is handled, the order of files in the archive, and the specifics of compression techniques used. Such differences, although sometimes subtle, can lead to significant challenges in environments that rely on deterministic builds—where the same source code should always produce an identical binary output.
 
 # Impact on Software Supply Chain Security
 
