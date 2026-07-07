@@ -3,7 +3,7 @@
   {{ range .Site.Pages }}
     {{ if in .Params.series $series }}
       <li>
-        <a href="{{ .Permalink }}">
+        <a href="{{ .RelPermalink }}">
             {{ .Date.Format "2006-01-02" }}
             {{ .Title }}
         </a>

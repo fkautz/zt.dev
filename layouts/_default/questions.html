@@ -16,12 +16,12 @@
 
     {{ range .Pages.Reverse }}
       <div class="post on-list">
-        <span class="content-large"><a href="{{ .Permalink }}">{{ .Title | markdownify }}</a></span>
+        <span class="content-large"><a href="{{ .RelPermalink }}">{{ .Title | markdownify }}</a></span>
 
         {{ if .Params.tags }}
           <span class="post-tags">
             {{ range .Params.tags }}
-              <a href="{{ (urlize (printf "tags/%s" . )) | absURL }}/">#{{ . }}</a>&nbsp;
+              <a href="{{ (urlize (printf "tags/%s" . )) | relURL }}/">#{{ . }}</a>&nbsp;
             {{ end }}
           </span>
         {{ end }}
@@ -29,9 +29,9 @@
         {{ if .Params.Cover }}
           <figure class="post-cover">
          {{ if .Params.UseRelativeCover }}
-            <img src="{{ (printf "%s%s" .Permalink .Params.Cover ) }}" alt="{{ .Params.CoverAlt | plainify | default .Title }}" />
+            <img src="{{ (printf "%s%s" .RelPermalink .Params.Cover ) }}" alt="{{ .Params.CoverAlt | plainify | default .Title }}" />
           {{ else }}
-            <img src="{{ .Params.Cover | absURL }}" alt="{{ .Params.CoverAlt | plainify | default .Title }}" />
+            <img src="{{ .Params.Cover | relURL }}" alt="{{ .Params.CoverAlt | plainify | default .Title }}" />
             {{ end }}
 
             {{ if .Params.CoverCaption }}

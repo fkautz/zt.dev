@@ -7,13 +7,13 @@
 <link rel="canonical" href="{{ .Permalink }}" />
 
 <!-- Theme CSS -->
-<link rel="stylesheet" href="{{ "assets/style.css" | absURL }}" />
-<link rel="stylesheet" href="{{ "assets/nova.css" | absURL }}" />
-<link rel="preload" href="{{ "assets/fonts/FiraCode-VariableFont_wght.ttf" | absURL }}" as="font" type="font/ttf" crossorigin>
+<link rel="stylesheet" href="{{ "assets/style.css" | relURL }}" />
+<link rel="stylesheet" href="{{ "assets/nova.css" | relURL }}" />
+<link rel="preload" href="{{ "assets/fonts/FiraCode-VariableFont_wght.ttf" | relURL }}" as="font" type="font/ttf" crossorigin>
 
 
 <!-- Icons -->
-<link rel="shortcut icon" href="{{ "favicon.ico" | absURL }}" />
+<link rel="shortcut icon" href="{{ "favicon.ico" | relURL }}" />
 
 {{ if .IsHome  }}
   {{- partial "head_meta_twitter_large.html" . }}
