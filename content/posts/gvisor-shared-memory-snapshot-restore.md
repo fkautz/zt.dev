@@ -8,7 +8,7 @@ series:
 
 **TL;DR**
 
-- KVM shared-base memory works: roughly 5×–17× flatten in controlled tests; ~2.9× on a real small ADK agent because of a ~20 MiB/sandbox floor.
+- KVM shared-base memory works: roughly 5×-17× flatten in controlled tests; ~2.9× on a real small ADK agent because of a ~20 MiB/sandbox floor.
 - Systrap overlay does not compose because the stub maps the per-sandbox memfd, not the sentry's shared overlay.
 - Portable win: snapshot restore (~11 s cold start → ~0.6 s on KVM; ~0.18 s on systrap) skips framework init on both platforms.
 - Verified bases ([Terrapin](https://github.com/fkautz/terrapin-go)) compose without materially hurting flatten; tampered blocks are rejected before guest exposure.
@@ -356,12 +356,17 @@ explicit design avoids: cross-tenant page deduplication is a documented side cha
 attacker can infer another tenant's memory contents from merge timing, whereas sharing a
 known, public base leaks nothing, because there is nothing secret to discover.
 
-KVM is different. Its `MapFile` maps the guest from `MapInternal`, the sentry mapping the base
-overlay modifies:
+KVM is different, and the two platforms' `MapFile` implementations are what decide it:
 
 ```go
-bs, err := f.MapInternal(fr, ...)   // the SENTRY's mapping
-// ...map bs into the guest's page tables...
+// systrap: the guest runs in a separate stub process that maps the
+// per-sandbox memfd. The base overlay lives on the sentry's mapping, not here,
+// so the stub sees holes where the base pages were skipped.
+mmap(MAP_SHARED, f.DataFD(fr), fr.Start)
+
+// KVM: the guest runs from the sentry's own mapping, the exact chunk
+// the base overlay modified copy-on-write, so the guest sees the shared base.
+bs, err := f.MapInternal(fr, ...)
 ```
 
 There is no separate stub with an independent `MAP_SHARED` memfd view, and there is one
@@ -524,9 +529,10 @@ cheaper on both platforms tested.
 - **Verify-before-expose composes without hurting density.** Terrapin verification of the
   shared base, once per node against an authenticated dataset ID, did not materially change the
   measured resident-memory flatten; tampering is caught before exposure.
-- **`memmap.File` / `MapFile` / `DataFD` hides a load-bearing platform difference.** KVM maps
-  the guest from the sentry's `MapInternal`; systrap maps it from the memfd FD into a separate
-  stub. A memory feature living in `pgalloc` is implicitly betting on which one the guest uses.
+- **The platform's guest-mapping call hides a load-bearing difference.** KVM maps
+  the guest from the sentry's own mapping (`MapInternal`); systrap maps it from the per-sandbox
+  memfd into a separate stub. A memory feature living in `pgalloc` is implicitly betting on
+  which one the guest actually executes from.
   This one was right for KVM (confirmed on hardware) and wrong for systrap, exactly as the code
   predicted.
 - **End-to-end tests, and real workloads, find what unit tests cannot.** Nine green unit tests
@@ -600,3 +606,5 @@ nested virtualization enabled for real `/dev/kvm`); gVisor built from source wit
 patches. The nested-KVM host mattered: an Apple-silicon setup exposed no usable `/dev/kvm` at all,
 VMware nesting crashed when the KVM backend ran, and only GCE's Linux KVM-backed nested
 virtualization ran it cleanly.
+
+*Author's note: this post's text was drafted with assistance from Opus 4.8.*
