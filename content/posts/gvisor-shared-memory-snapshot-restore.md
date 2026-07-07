@@ -607,4 +607,6 @@ patches. The nested-KVM host mattered: an Apple-silicon setup exposed no usable 
 VMware nesting crashed when the KVM backend ran, and only GCE's Linux KVM-backed nested
 virtualization ran it cleanly.
 
-*Author's note: this post's text was drafted with assistance from Opus 4.8.*
+*Author's note: the patches to reproduce this benchmark will be published soon, once they have
+been cleaned up to make them easier for people to consume. This post's text was drafted with
+assistance from Opus 4.8.*
