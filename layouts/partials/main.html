@@ -3,7 +3,7 @@ Posts
     <ul>
         {{ range . }}
             <li>
-                <a href="{{ .Permalink }}">{{ .Date.Format "2006-01-02" }} {{ .Title | markdownify }}</li>
+                <a href="{{ .RelPermalink }}">{{ .Date.Format "2006-01-02" }} {{ .Title | markdownify }}</li>
         {{ end }}
     </ul>
 </div>
