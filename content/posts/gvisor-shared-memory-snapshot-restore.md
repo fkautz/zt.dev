@@ -6,6 +6,10 @@ series:
  - zero-trust
 ---
 
+*Author's note: the patches to reproduce this benchmark will be published soon, once they have
+been cleaned up to make them easier for people to consume. This post's text was drafted with
+assistance from Opus 4.8.*
+
 **TL;DR**
 
 - KVM shared-base memory works: roughly 5×-17× flatten in controlled tests; ~2.9× on a real small ADK agent because of a ~20 MiB/sandbox floor.
@@ -606,7 +610,3 @@ nested virtualization enabled for real `/dev/kvm`); gVisor built from source wit
 patches. The nested-KVM host mattered: an Apple-silicon setup exposed no usable `/dev/kvm` at all,
 VMware nesting crashed when the KVM backend ran, and only GCE's Linux KVM-backed nested
 virtualization ran it cleanly.
-
-*Author's note: the patches to reproduce this benchmark will be published soon, once they have
-been cleaned up to make them easier for people to consume. This post's text was drafted with
-assistance from Opus 4.8.*
