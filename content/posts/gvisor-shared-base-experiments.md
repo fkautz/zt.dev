@@ -114,7 +114,7 @@ if (idx % 2 == 0) {
 }
 ```
 
-The LLIFS rule is that absent is never zero: a page that has not been verified and
+The design rule is that absent is never zero: a page that has not been verified and
 populated yet must fault and be filled from the verified base, and a page the manifest
 says is zero must be installable without any fetch.
 
