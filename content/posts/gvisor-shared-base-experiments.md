@@ -31,6 +31,25 @@ aarch64 Linux VM, KVM tests on the GCE environment of record) and the published 
 reproduced, including the combined gVisor patch applying and testing cleanly against a
 fresh upstream clone; the flatten table in Test 8 reproduced digit for digit.
 
+## What this proves
+
+This work found two distinct optimizations, and they should not be blurred together. On
+gVisor's KVM platform, restored sandboxes can share clean guest-memory pages from a common
+copy-on-write base, which materially increases density when the resident base is large.
+Independently of that, checkpoint restore avoids expensive runtime initialization and cuts
+agent startup cost several-fold on both KVM and systrap. Shared-base memory does not
+eliminate the fixed per-sandbox gVisor overhead, and burst restores remain CPU-bound. The
+strongest near-term result is therefore not universal memory deduplication but fast
+restoration plus extremely cheap parked-agent state, with the density gain available as a
+KVM bonus on top. The experiments below build that case one layer at a time.
+
+Three words recur and mean different things, so here are the definitions used throughout.
+The **checkpoint delta** is the set of pages that differ from the base at checkpoint time,
+which is what a delta-only checkpoint serializes. The **runtime COW delta** is the private
+memory a restored clone accumulates afterward as copy-on-write breaks sharing page by
+page. The **parked-state delta** is what a suspended agent costs on disk beyond the shared
+base: its kernel state file plus its checkpoint delta.
+
 Two environment notes up front:
 
 - Tests 1 through 10 run on any Linux with userfaultfd enabled
@@ -256,6 +275,20 @@ clone-safety is conditional: RNG-sensitive agents need `getrandom`, a reseed hoo
 fresh start instead of a clone. ASLR uniformity across a clone set is a residual risk that
 only trust boundaries mitigate.
 
+This is the most consequential operational finding in the ladder, so it deserves stating
+as a requirement rather than a data point: **a restored clone is not automatically a safe
+new identity.** Identical PRNG streams, boot identities, and address-space layouts across
+a cohort can produce duplicated tokens and nonces, correlated backoff, and exploits that
+port across every clone. A production platform needs an explicit clone contract, enforced
+at resume time:
+
+- refresh workload identity and regenerate instance IDs;
+- reseed application-level PRNGs (or require `getrandom` for anything sensitive);
+- reopen outbound sessions where the protocol assumes a unique endpoint;
+- invalidate inherited leases, locks, and per-instance telemetry identifiers;
+- do not clone an image after secret-bearing nondeterministic state has been initialized,
+  unless the application provides a resume hook that regenerates it.
+
 **Run it** ([`benchmarking/rhz.go`](https://github.com/fkautz/substrate/blob/shared-base-experiments/benchmarking/rhz.go)):
 
 ```
@@ -291,7 +324,8 @@ cold fault + verify, serial              ~2.1 ms/block
 Hashing is cheaper than the page-fault populate it rides on, so verification is not the
 bottleneck. A full 1 GiB base verifies in about 0.43 s, paid once per node, and a ~100 MiB
 resume working set adds roughly 105 ms to the first cold restore on a node and near zero
-to every clone after it.
+to later clones, for as long as the verified blocks stay resident in (or available from)
+the node's shared backing.
 
 **Run it** ([`benchmarking/uffd_latency.c`](https://github.com/fkautz/substrate/blob/shared-base-experiments/benchmarking/uffd_latency.c)):
 
@@ -469,9 +503,14 @@ N=32, base=64MiB,  delta=2    15.0x     16.5x      137 MiB      2061 MiB
 
 Consistently ~90% of the ideal `N(base+delta)/(base+N*delta)`; the gap is a fixed 15 to 30
 MiB of Go runtime and page tables that amortizes as the base grows. Private_Dirty tracks
-N times delta, confirming each clone pays only for its own copy-on-write pages. One honest
-scope note: this measures the sentry's mapping of guest memory, which is exactly what the
-KVM platform feeds to the guest (Test 11 is where that distinction bites).
+N times delta, confirming each clone pays only for its own copy-on-write pages.
+
+Two honest scope notes. First, because every clone touches the complete base, summed Rss
+closely approximates the resident footprint these mappings would need without sharing, but
+it is still a proxy for the counterfactual rather than a paired no-sharing run; Test 12
+closes that gap at the runsc level with a directly measured no-base baseline. Second, this
+measures the sentry's mapping of guest memory, which is exactly what the KVM platform
+feeds to the guest (Test 11 is where that distinction bites).
 
 **Run it** (the test ships in the patch; also standalone at
 [`benchmarking/flatten_test.go`](https://github.com/fkautz/substrate/blob/shared-base-experiments/benchmarking/flatten_test.go)):
@@ -523,7 +562,8 @@ tamper: flipped 1 byte -> verify REJECTED at that block, never exposed
 
 The flatten with verification in front matches the integrity-free numbers at the same
 configs, verification cost does not grow with the sandbox count, and a corrupted block is
-caught. Integrity is free at the density layer.
+caught. Integrity verification adds a once-per-node cost but does not materially reduce
+the density flatten.
 
 **Run it** ([`benchmarking/verify_share/`](https://github.com/fkautz/substrate/blob/shared-base-experiments/benchmarking/verify_share/)):
 
@@ -674,10 +714,17 @@ sum sentry Pss =  421 MiB (shared)
 FLATTEN = 5.69x through the real runsc CLI on a live KVM guest
 ```
 
-A freshly warmed clone's delta really is zero (`pages.img` is empty), and 2.4 GiB of
-would-be private guest RAM collapses to 0.42 GiB. The number is lower than the pgalloc
-layer's ~10x because each sandbox carries 20 to 45 MiB of unshareable sentry overhead,
-which is the subject of Test 14.
+A freshly warmed clone's checkpoint delta really is zero (`pages.img` is empty), and 2.4
+GiB of would-be private guest RAM collapses to 0.42 GiB. The number is lower than the
+pgalloc layer's ~10x because each sandbox carries 20 to 45 MiB of unshareable sentry
+overhead, which is the subject of Test 14.
+
+To close the counterfactual question directly rather than by the Rss proxy, the paired
+control was also run: the identical workload and N=8 restores from a normal checkpoint
+with no base. Without sharing, summed Pss is 2212 MiB against summed Rss of 2396 MiB;
+Pss approximately equals Rss, confirming that nothing is shared in the stock path and
+that the shared-base run's 399 to 421 MiB Pss is a real physical saving (a directly
+measured Pss-to-Pss flatten of about 5.5x).
 
 **Run it** ([`benchmarking/shared-base/runs/measure.sh`](https://github.com/fkautz/substrate/blob/shared-base-experiments/benchmarking/shared-base/runs/measure.sh)):
 follow [`REPRODUCE.md`](https://github.com/fkautz/substrate/blob/shared-base-experiments/benchmarking/shared-base/REPRODUCE.md) sections 1 to 3, then run
@@ -700,13 +747,17 @@ N    sumRss    sumPss   MemAvail   load1
 300 22698 MiB  5797 MiB    983 MiB  29     <- memory floor; all still correct
 ```
 
-Every clone ran correctly at every N. The memory ceiling is ~300 sandboxes on 15 GiB;
-without sharing, each clone would need base plus overhead (~175 MiB), so only ~85 would
-fit: about 3.5x more sandboxes from sharing even with this deliberately small base. The
-marginal cost decomposes into ~19 MiB/clone of sentry Pss plus ~28 MiB of gofer and
-monitor processes, so total density follows `N ~= (RAM - base) / ~47 MiB`. CPU is the
-softer limit: load stays under 1 up to N=64 and reaches ~29 at N=300. A larger shared base
-improves both the density and the flatten, since the fixed ~47 MiB floor stops dominating.
+Every clone ran correctly at every N. The experiment reached its configured memory-safety
+floor at about 300 correct sandboxes on 15 GiB (the guard stops before the OOM killer
+would, so this is the harness's ceiling, not a demonstrated practical capacity); without
+sharing, each clone would need base plus overhead (~175 MiB), so only ~85 would fit: about
+3.5x more sandboxes from sharing even with this deliberately small base. The marginal cost
+decomposes into ~19 MiB/clone of sentry Pss plus ~28 MiB of gofer and monitor processes,
+so total density follows `N ~= (RAM - base) / ~47 MiB`. CPU contention would impose a
+lower practical limit for actively serving workloads: load stays under 1 up to N=64 but
+reaches ~29 on 4 vCPUs at N=300, so these are parked-or-idle densities, not 300
+simultaneously busy agents. A larger shared base improves both the density and the
+flatten, since the fixed ~47 MiB floor stops dominating.
 
 **Run it** ([`benchmarking/shared-base/runs/ceiling.sh`](https://github.com/fkautz/substrate/blob/shared-base-experiments/benchmarking/shared-base/runs/ceiling.sh))
 on the Test 12 setup. It escalates N in steps and records a table per step.
@@ -763,8 +814,8 @@ until grep -q "tick=" $H/warm.log; do sleep 0.02; done   # restore -> serving
 
 ```
 correctness:  live Python + asyncio + grpc checkpoint/restores correctly
-density:      base.img=80M, delta~0; N=8: sumRss=721M sumPss=250M -> 2.88x
-              (floor-limited, per Test 14; per-clone Python COW delta only ~4M,
+density:      base.img=80M, checkpoint delta~0; N=8: sumRss=721M sumPss=250M -> 2.88x
+              (floor-limited, per Test 14; per-clone runtime COW delta only ~4M,
                thanks to CPython 3.12 immortal objects)
 latency:      COLD START  (run -> serving):     wall=11.4s  cpu=7.1s
               RESTORE     (restore -> serving):  wall=0.47s  cpu=0.51s
@@ -837,9 +888,9 @@ pool of 10,000 parked agents:  ~2.5G shared-base  vs  ~810G normal  (~300x)
 ```
 
 Parking an agent takes a tenth of a second and a quarter megabyte. The storage flatten
-mirrors and exceeds the memory flatten because a fresh clone's delta is zero; only the
-small kernel-state file is per-agent. The caveat: the delta grows as an agent diverges,
-but state plus delta stays far below a full checkpoint.
+mirrors and exceeds the memory flatten because a fresh clone's checkpoint delta is zero;
+only the small kernel-state file is per-agent. The caveat: the parked-state delta grows as
+an agent diverges, but state plus delta stays far below a full checkpoint.
 
 **Systrap results** (normal checkpoint, since base sharing is KVM-only per Test 11):
 
@@ -857,6 +908,33 @@ essentially every gVisor deployment.
 **Run it**
 ([`benchmarking/shared-base/runs/expC.sh`](https://github.com/fkautz/substrate/blob/shared-base-experiments/benchmarking/shared-base/runs/expC.sh)) on
 the Test 15 setup; the systrap half runs on any Linux host, no `/dev/kvm` required.
+
+## What is not measured yet
+
+Seventeen experiments is enough proof for the mechanism; it is not a complete operational
+story. The honest list of what these experiments do not yet cover, roughly in the order it
+matters:
+
+- **Base lifecycle under pressure.** Several distinct bases on one node competing for page
+  cache: refault cost, reclaim behavior, and tail latency across mixed agent versions.
+- **Divergence over time.** The 5000-request delta is one controlled Go workload. Realistic
+  Python agents over 1, 8, and 24 hours would establish the economic half-life of a shared
+  base, i.e. how fast the runtime COW delta erodes the sharing.
+- **Base version migration.** How 10,000 parked agents move from base A to base B (or
+  whether they stay pinned to A) decides how security updates work for a parked fleet.
+- **Secret and connection hygiene.** Snapshotting an agent holding TLS sessions, tokens,
+  open sockets, DNS cache, and leases, and determining what must be refreshed versus
+  resumed: the Test 4 clone contract, exercised for real.
+- **NUMA and huge pages.** One shared physical base may be remote memory on a second
+  socket, and sharing/COW happen at kernel page granularity while verification uses 2 MiB
+  blocks; THP interaction and write-time splitting are unmeasured.
+- **Trust boundary.** These experiments assume clones of the same image within one policy
+  domain. Sharing a base across mutually untrusted tenants raises dedup-style side-channel
+  questions the design intentionally avoids by sharing only a known public base; that
+  boundary should be stated and enforced, not assumed.
+- **Bare-metal KVM.** All KVM numbers here are nested-virtualization numbers; latency and
+  density should be repeated on bare metal, where the KVM-versus-systrap comparison will
+  also look different.
 
 ## The scoreboard
 
@@ -883,7 +961,10 @@ the Test 15 setup; the systrap half runs on any Linux host, no `/dev/kvm` requir
 Seventeen experiments, three layers (raw kernel, gVisor internals, real runsc on real
 KVM), and two results worth building on: shared-base memory is a genuine density win on
 KVM when the resident base is large, and snapshot restore instead of cold start is a large
-win everywhere. The code for every row is in
+win everywhere. Put shortly, memory sharing is an optimizer; snapshot semantics are the
+platform. Initialized computation that can be stored, verified, parked, cloned, and
+resumed as a first-class artifact is the primitive this ladder actually demonstrates, and
+it stands even where the memory sharing does not. The code for every row is in
 [`benchmarking/`](https://github.com/fkautz/substrate/blob/shared-base-experiments/benchmarking/), and
 [`benchmarking/shared-base/REPRODUCE.md`](https://github.com/fkautz/substrate/blob/shared-base-experiments/benchmarking/shared-base/REPRODUCE.md) is the
 ladder from a bare Ubuntu host to every number above.
