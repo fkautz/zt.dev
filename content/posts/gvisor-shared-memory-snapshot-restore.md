@@ -6,8 +6,13 @@ series:
  - zero-trust
 ---
 
-*Author's note: the patches to reproduce this benchmark will be published soon, once they have
-been cleaned up to make them easier for people to consume. This post's text was drafted with
+*Author's note: the patches and benchmark code are now published: the harness on the
+[`shared-base-experiments` branch of fkautz/substrate](https://github.com/fkautz/substrate/tree/shared-base-experiments/benchmarking)
+and the gVisor changes on the
+[`shared-base-density` branch of fkautz/gvisor](https://github.com/fkautz/gvisor/tree/shared-base-density).
+A companion post,
+[Every experiment behind the shared-base gVisor memory work](/posts/gvisor-shared-base-experiments/),
+walks each experiment with code, results, and run instructions. This post's text was drafted with
 assistance from Opus 4.8.*
 
 **TL;DR**
