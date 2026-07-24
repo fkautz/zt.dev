@@ -8,6 +8,17 @@ series:
 
 *Author's note: this post's text was drafted with assistance from Fable 5.*
 
+**TL;DR**
+
+- Seventeen experiments, three layers: the raw Linux primitive, gVisor's `MemoryFile`
+  internals, and real `runsc` on real KVM. All runnable from the published code.
+- Shared-base restore is a measured 5.5x physical-memory flatten (Pss against a paired
+  no-base baseline, N=8, through the runsc CLI). KVM only.
+- Snapshot restore beats cold start about 24x in wall time and 14x in CPU for a real ADK
+  agent, on both KVM and systrap.
+- A parked agent costs about 248 KiB beside one shared base, versus about 81 MiB for a
+  full checkpoint.
+
 This is the lab-notebook companion to
 [Sharing gVisor guest memory worked on KVM. Snapshot restore mattered more.](/posts/gvisor-shared-memory-snapshot-restore/)
 That post tells the story; this one shows the experiments. Each test below gets its own
@@ -43,7 +54,7 @@ strongest near-term result is therefore not universal memory deduplication but f
 restoration plus extremely cheap parked-agent state, with the additional KVM density gain
 available on top. The experiments below build that case one layer at a time.
 
-Three words recur and mean different things, so here are the definitions used throughout.
+Three kinds of delta appear in these experiments.
 The **checkpoint delta** is the set of pages that differ from the base at checkpoint time,
 which is what a delta-only checkpoint serializes. The **runtime COW delta** is the private
 memory a restored clone accumulates afterward as copy-on-write breaks sharing page by
@@ -103,9 +114,9 @@ if (idx % 2 == 0) {
 }
 ```
 
-This matters because the LLIFS rule is "absent is never zero": a page that has not been
-verified and populated yet must fault and be filled from the verified base, and a page the
-manifest says is zero must be installable without any fetch.
+The LLIFS rule is that absent is never zero: a page that has not been verified and
+populated yet must fault and be filled from the verified base, and a page the manifest
+says is zero must be installable without any fetch.
 
 **Results** (256 MiB base, N=8):
 
@@ -135,7 +146,7 @@ Base/delta restore is pointless if gVisor's checkpoint/restore does not already 
 real, stateful workload. This test also measures the "before" picture the whole project
 attacks: what N restored clones cost with no sharing.
 
-The workload is deliberately simple and unforgiving: fill 1 GiB of heap with a
+The workload is simple and unforgiving: fill 1 GiB of heap with a
 deterministic per-page pattern, then once a second increment an in-memory counter and
 re-checksum a sample of the heap:
 
@@ -190,9 +201,9 @@ The same question as Test 2, but for a real networked Go service: does live serv
 survive restore, and are clones actually independent of each other afterward?
 
 `hsrv.go` warms 512 MiB of checksummed heap and serves `/healthz`, reporting an in-memory
-request counter, the heap checksum, and uptime. The interesting design choice is how it is
-health-checked. Host-to-sandbox networking under gVisor needs CNI plumbing that is
-orthogonal to this work, so the binary doubles as its own client, exercising a real
+request counter, the heap checksum, and uptime. Host-to-sandbox networking under gVisor
+needs CNI plumbing that is orthogonal to this work, so the binary doubles as its own
+client, exercising a real
 TCP/HTTP round trip over gVisor's netstack loopback from inside the sandbox:
 
 ```go
@@ -253,8 +264,7 @@ fmt.Fprintf(w,
     pv, time.Since(start).Milliseconds(), time.Now().Unix(), heapObj, os.Getpid())
 ```
 
-The analysis rule is the entire method: restore N clones from one checkpoint, probe each,
-and diff the fields. A field that comes back identical across clones is frozen shared
+The method: restore N clones from one checkpoint, probe each, and diff the fields. A field that comes back identical across clones is frozen shared
 state (a hazard); a field that differs is something gVisor already refreshes.
 
 **Results:**
@@ -275,9 +285,8 @@ clone-safety is conditional: RNG-sensitive agents need `getrandom`, a reseed hoo
 fresh start instead of a clone. ASLR uniformity across a clone set is a residual risk that
 only trust boundaries mitigate.
 
-This is the most consequential operational finding in the ladder, so it deserves stating
-as a requirement rather than a data point: **a restored clone is not automatically a safe
-new identity.** Identical PRNG streams, boot identities, and address-space layouts across
+This is the most consequential operational finding in the ladder: **a restored clone is
+not automatically a safe new identity.** Identical PRNG streams, boot identities, and address-space layouts across
 a cohort can produce duplicated tokens and nonces, correlated backoff, and exploit
 techniques that transfer reliably across the clone cohort. A production platform needs an explicit clone contract, enforced
 at resume time:
@@ -339,9 +348,9 @@ gcc -O2 -pthread -o uffd_latency uffd_latency.c
 The economics of base sharing are `1 x base + N x delta`. Test 1 established the base
 term; this test measures the delta term on a real running sandbox, with no gVisor rebuild.
 
-The trick is a gVisor layout fact discovered during this work: the sentry's guest-RAM
-memfd (`/memfd:runsc-memory`) is offset-linear, meaning file offset equals guest memory
-offset. So guest memory can be snapshotted from outside by sparse-copying the memfd's
+The measurement rests on a gVisor layout fact found during this work: the sentry's
+guest-RAM memfd (`/memfd:runsc-memory`) is offset-linear, meaning file offset equals guest
+memory offset. So guest memory can be snapshotted from outside by sparse-copying the memfd's
 committed extents:
 
 ```go
@@ -422,9 +431,9 @@ recordBaseBacked := func(fr memmap.FileRange) {
 }
 ```
 
-The restore side overlays the base before any delta is applied, which makes the rest fall
-out for free: delta writes go through the mapping and copy-on-write the overlay, on both
-the synchronous path and gVisor's async page loader:
+The restore side overlays the base before any delta is applied. Delta writes then go
+through the mapping and copy-on-write the overlay, on both the synchronous path and
+gVisor's async page loader:
 
 ```go
 // GVISOR-3 (B1/F8): overlay [0, SharedBaseBytes) of the restore mapping
@@ -475,8 +484,7 @@ bazel test //pkg/sentry/pgalloc:pgalloc_test
 
 With the mechanism in-tree, the payoff question: restore N MemoryFiles from one delta-only
 checkpoint over one shared base, through the real `SaveTo`/`LoadFrom` code, and measure
-the physical memory. The elegance of the measurement is that one `smaps_rollup` read gives
-both sides of the comparison at once:
+the physical memory. One `smaps_rollup` read gives both sides of the comparison at once:
 
 ```go
 // Rss counts the base once per mapping (the would-be no-sharing footprint)
@@ -505,7 +513,7 @@ Consistently ~90% of the ideal `N(base+delta)/(base+N*delta)`; the gap is a fixe
 MiB of Go runtime and page tables that amortizes as the base grows. Private_Dirty tracks
 N times delta, confirming each clone pays only for its own copy-on-write pages.
 
-Two honest scope notes. First, because every clone touches the complete base, summed Rss
+Two scope notes. First, because every clone touches the complete base, summed Rss
 closely approximates the resident footprint these mappings would need without sharing, but
 it is still a proxy for the counterfactual rather than a paired no-sharing run; Test 12
 closes that gap at the runsc level with a directly measured no-base baseline. Second, this
@@ -580,9 +588,8 @@ and should be fetched lazily: a block is pulled, verified, and installed only wh
 something first touches it. This test builds that whole path with a hand-rolled
 userfaultfd handler over a node-shared memfd.
 
-The fault handler is the heart of it: map the faulting address to a 2 MiB block, look the
-block up in the CAS by its Terrapin ID, recompute the ID over the fetched bytes, and only
-then install:
+The fault handler maps the faulting address to a 2 MiB block, looks the block up in the
+CAS by its Terrapin ID, recomputes the ID over the fetched bytes, and only then installs:
 
 ```go
 off := (msg.PFAddress - nodeAddr) &^ (blockSize - 1)
@@ -691,7 +698,7 @@ the base image and writes a delta-only checkpoint in one step. The workload touc
 256 MiB every second, so the entire base faults resident and the sharing has to show up as
 physics, not accounting.
 
-The orchestration is deliberately plain shell; the measurement loop sums Rss and Pss over
+The orchestration is plain shell; the measurement loop sums Rss and Pss over
 every live sentry:
 
 ```bash
@@ -912,8 +919,7 @@ the Test 15 setup; the systrap half runs on any Linux host, no `/dev/kvm` requir
 ## What is not measured yet
 
 Seventeen experiments is enough proof for the mechanism; it is not a complete operational
-story. The honest list of what these experiments do not yet cover, roughly in the order it
-matters:
+story. What these experiments do not yet cover, roughly in the order it matters:
 
 - **Base lifecycle under pressure.** Several distinct bases on one node competing for page
   cache: refault cost, reclaim behavior, and tail latency across mixed agent versions.
@@ -961,8 +967,7 @@ matters:
 Seventeen experiments, three layers (raw kernel, gVisor internals, real runsc on real
 KVM), and two results worth building on: shared-base memory is a genuine density win on
 KVM when the resident base is large, and snapshot restore instead of cold start is a large
-win everywhere. Put shortly, memory sharing is an optimizer; snapshot semantics are the
-platform. Initialized computation that can be stored, verified, parked, cloned, and
+win everywhere. Memory sharing is an optimizer; snapshot semantics are the platform. Initialized computation that can be stored, verified, parked, cloned, and
 resumed as a first-class artifact is the primitive this ladder actually demonstrates, and
 it stands even where the memory sharing does not. The code for every row is in
 [`benchmarking/`](https://github.com/fkautz/substrate/blob/shared-base-experiments/benchmarking/), and
