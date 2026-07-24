@@ -40,8 +40,8 @@ Independently of that, checkpoint restore avoids expensive runtime initializatio
 agent startup cost several-fold on both KVM and systrap. Shared-base memory does not
 eliminate the fixed per-sandbox gVisor overhead, and burst restores remain CPU-bound. The
 strongest near-term result is therefore not universal memory deduplication but fast
-restoration plus extremely cheap parked-agent state, with the density gain available as a
-KVM bonus on top. The experiments below build that case one layer at a time.
+restoration plus extremely cheap parked-agent state, with the additional KVM density gain
+available on top. The experiments below build that case one layer at a time.
 
 Three words recur and mean different things, so here are the definitions used throughout.
 The **checkpoint delta** is the set of pages that differ from the base at checkpoint time,
@@ -278,8 +278,8 @@ only trust boundaries mitigate.
 This is the most consequential operational finding in the ladder, so it deserves stating
 as a requirement rather than a data point: **a restored clone is not automatically a safe
 new identity.** Identical PRNG streams, boot identities, and address-space layouts across
-a cohort can produce duplicated tokens and nonces, correlated backoff, and exploits that
-port across every clone. A production platform needs an explicit clone contract, enforced
+a cohort can produce duplicated tokens and nonces, correlated backoff, and exploit
+techniques that transfer reliably across the clone cohort. A production platform needs an explicit clone contract, enforced
 at resume time:
 
 - refresh workload identity and regenerate instance IDs;
