@@ -12,10 +12,10 @@ series:
 
 - Seventeen experiments, three layers: the raw Linux primitive, gVisor's `MemoryFile`
   internals, and real `runsc` on real KVM. All runnable from the published code.
-- Shared-base restore is a measured 5.5x physical-memory flatten (Pss against a paired
-  no-base baseline, N=8, through the runsc CLI). KVM only.
-- Snapshot restore beats cold start about 24x in wall time and 14x in CPU for a real ADK
-  agent, on both KVM and systrap.
+- Shared-base restore is a measured 5.5x physical-memory flatten (measured by PSS against
+  a paired no-base baseline, N=8, through the runsc CLI). KVM only.
+- Snapshot restore sharply reduces ADK agent startup on both KVM and systrap, including
+  about 24x lower wall time and 14x lower CPU on KVM.
 - A parked agent costs about 248 KiB beside one shared base, versus about 81 MiB for a
   full checkpoint.
 
@@ -203,8 +203,8 @@ survive restore, and are clones actually independent of each other afterward?
 `hsrv.go` warms 512 MiB of checksummed heap and serves `/healthz`, reporting an in-memory
 request counter, the heap checksum, and uptime. Host-to-sandbox networking under gVisor
 needs CNI plumbing that is orthogonal to this work, so the binary doubles as its own
-client, exercising a real
-TCP/HTTP round trip over gVisor's netstack loopback from inside the sandbox:
+client, exercising a real TCP/HTTP round trip over gVisor's netstack loopback from inside
+the sandbox:
 
 ```go
 // Client mode: `hsrv check` performs a real HTTP GET against the local
@@ -264,8 +264,9 @@ fmt.Fprintf(w,
     pv, time.Since(start).Milliseconds(), time.Now().Unix(), heapObj, os.Getpid())
 ```
 
-The method: restore N clones from one checkpoint, probe each, and diff the fields. A field that comes back identical across clones is frozen shared
-state (a hazard); a field that differs is something gVisor already refreshes.
+The method: restore N clones from one checkpoint, probe each, and diff the fields. A field
+that comes back identical across clones is frozen shared state (a hazard); a field that
+differs is something gVisor already refreshes.
 
 **Results:**
 
@@ -286,10 +287,10 @@ fresh start instead of a clone. ASLR uniformity across a clone set is a residual
 only trust boundaries mitigate.
 
 This is the most consequential operational finding in the ladder: **a restored clone is
-not automatically a safe new identity.** Identical PRNG streams, boot identities, and address-space layouts across
-a cohort can produce duplicated tokens and nonces, correlated backoff, and exploit
-techniques that transfer reliably across the clone cohort. A production platform needs an explicit clone contract, enforced
-at resume time:
+not automatically a safe new identity.** Identical PRNG streams, boot identities, and
+address-space layouts across a cohort can produce duplicated tokens and nonces, correlated
+backoff, and exploit techniques that transfer reliably across the clone cohort. A
+production platform needs an explicit clone contract, enforced at resume time:
 
 - refresh workload identity and regenerate instance IDs;
 - reseed application-level PRNGs (or require `getrandom` for anything sensitive);
@@ -967,9 +968,12 @@ story. What these experiments do not yet cover, roughly in the order it matters:
 Seventeen experiments, three layers (raw kernel, gVisor internals, real runsc on real
 KVM), and two results worth building on: shared-base memory is a genuine density win on
 KVM when the resident base is large, and snapshot restore instead of cold start is a large
-win everywhere. Memory sharing is an optimizer; snapshot semantics are the platform. Initialized computation that can be stored, verified, parked, cloned, and
-resumed as a first-class artifact is the primitive this ladder actually demonstrates, and
-it stands even where the memory sharing does not. The code for every row is in
+win everywhere.
+
+Memory sharing is an optimizer; snapshot semantics are the platform. Initialized
+computation that can be stored, verified, parked, cloned, and resumed as a first-class
+artifact is the primitive this ladder actually demonstrates, and it stands even where the
+memory sharing does not. The code for every row is in
 [`benchmarking/`](https://github.com/fkautz/substrate/blob/shared-base-experiments/benchmarking/), and
 [`benchmarking/shared-base/REPRODUCE.md`](https://github.com/fkautz/substrate/blob/shared-base-experiments/benchmarking/shared-base/REPRODUCE.md) is the
 ladder from a bare Ubuntu host to every number above.
